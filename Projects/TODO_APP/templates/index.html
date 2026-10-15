@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-sclae=1.0">
+        <title>My Todo App</title>
+
+    </head>
+    <body>
+        <h1>My Todo App</h1>
+        <h2>My Tasks</h2>
+        <u1>
+            {% for task in tasks %}
+            <li>
+                {{task.title}}
+                {% if task.completed %}
+                   - completed
+                {% else %}
+                    - Pending
+                {% endif %}
+            </li>
+            {% endfor %}
+        </u1>
+    </body>
+</html>
