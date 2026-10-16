@@ -8,7 +8,21 @@
     </head>
     <body>
         <h1>My Todo App</h1>
+        <h2>Add a New Task</h2>
+        <form action="{{url_for('home')}}" method="POST">
+            <label for="title">Task:</label>
+            <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter your task"
+            required
+            >
+            <button type="submit">Add Task</button>
+
+        </form>
         <h2>My Tasks</h2>
+        {% if tasks %}
         <u1>
             {% for task in tasks %}
             <li>
@@ -21,5 +35,8 @@
             </li>
             {% endfor %}
         </u1>
+    {% else %}
+        <p>No tasks available.</p>
+    {% endif %}
     </body>
 </html>
