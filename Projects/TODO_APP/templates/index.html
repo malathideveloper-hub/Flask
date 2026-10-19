@@ -1,42 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-sclae=1.0">
-        <title>My Todo App</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Todo App</title>
+</head>
+<body>
+    <h1>My Todo App</h1>
 
-    </head>
-    <body>
-        <h1>My Todo App</h1>
-        <h2>Add a New Task</h2>
-        <form action="{{url_for('home')}}" method="POST">
-            <label for="title">Task:</label>
-            <input
+    <h2>Add a New Task</h2>
+
+    <form action="{{ url_for('home') }}" method="POST">
+        <label for="title">Task:</label>
+        <input
             type="text"
             id="title"
             name="title"
             placeholder="Enter your task"
             required
-            >
-            <button type="submit">Add Task</button>
+        >
+        <button type="submit">Add Task</button>
+    </form>
 
-        </form>
-        <h2>My Tasks</h2>
-        {% if tasks %}
-        <u1>
+    <h2>My Tasks</h2>
+
+    {% if tasks %}
+        <ul>
             {% for task in tasks %}
-            <li>
-                {{task.title}}
-                {% if task.completed %}
-                   - completed
-                {% else %}
-                    - Pending
-                {% endif %}
-            </li>
+                <li>
+                    {{ task.title }}
+
+                    {% if task.completed %}
+                        - Completed
+                    {% else %}
+                        - Pending
+
+                        <form
+                            action="{{ url_for('complete_task', task_id=task.id) }}"
+                            method="POST"
+                            style="display: inline;"
+                        >
+                            <button type="submit">Mark Complete</button>
+                        </form>
+                    {% endif %}
+
+                    <form
+                        action="{{ url_for('delete_task', task_id=task.id) }}"
+                        method="POST"
+                        style="display: inline;"
+                    >
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
             {% endfor %}
-        </u1>
+        </ul>
     {% else %}
-        <p>No tasks available.</p>
+        <p>No tasks available. Add your first task!</p>
     {% endif %}
-    </body>
+</body>
 </html>

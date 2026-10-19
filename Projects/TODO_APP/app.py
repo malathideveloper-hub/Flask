@@ -16,16 +16,45 @@ def home():
         title = request.form.get("title", "").strip()
 
         if title:
+            next_id = max((task["id"] for task in tasks), default=0) + 1
+
             new_task = {
-                "id": len(tasks) + 1,
+                "id": next_id,
                 "title": title,
                 "completed": False,
             }
+
             tasks.append(new_task)
 
         return redirect(url_for("home"))
 
     return render_template("index.html", tasks=tasks)
+
+
+@app.route("/complete/<int:task_id>", methods=["POST"])
+def complete_task(task_id):
+    task = next(
+        (task for task in tasks if task["id"] == task_id),
+        None,
+    )
+
+    if task:
+        task["completed"] = True
+
+    return redirect(url_for("home"))
+
+
+@app.route("/delete/<int:task_id>", methods=["POST"])
+def delete_task(task_id):
+    task = next(
+        (task for task in tasks if task["id"] == task_id),
+        None,
+    )
+
+    if task:
+        tasks.remove(task)
+
+    return redirect(url_for("home"))
 
 
 if __name__ == "__main__":
