@@ -3,47 +3,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Todo App</title>
 </head>
 <body>
     <h1>My Todo App</h1>
 
-    <h2>Add a New Task</h2>
-
-    <form action="{{ url_for('home') }}" method="POST">
-        <label for="title">Task:</label>
+    <form action="{{ url_for('add_task') }}" method="POST">
         <input
             type="text"
-            id="title"
             name="title"
-            placeholder="Enter your task"
+            placeholder="Enter a task"
             required
         >
         <button type="submit">Add Task</button>
     </form>
 
-    <h2>My Tasks</h2>
+    <h2>Tasks</h2>
 
     {% if tasks %}
         <ul>
             {% for task in tasks %}
                 <li>
-                    {{ task.title }}
-
                     {% if task.completed %}
-                        - Completed
+                        <s>{{ task.title }}</s>
+                        <span>Completed</span>
                     {% else %}
-                        - Pending
-
-                        <form
-                            action="{{ url_for('complete_task', task_id=task.id) }}"
-                            method="POST"
-                            style="display: inline;"
-                        >
-                            <button type="submit">Mark Complete</button>
-                        </form>
+                        {{ task.title }}
                     {% endif %}
+
+                    <form
+                        action="{{ url_for('complete_task', task_id=task.id) }}"
+                        method="POST"
+                        style="display: inline;"
+                    >
+                        <button type="submit">
+                            {% if task.completed %}
+                                Reopen
+                            {% else %}
+                                Complete
+                            {% endif %}
+                        </button>
+                    </form>
 
                     <form
                         action="{{ url_for('delete_task', task_id=task.id) }}"
@@ -56,7 +56,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>No tasks available. Add your first task!</p>
+        <p>No tasks yet. Add your first task!</p>
     {% endif %}
 </body>
 </html>
